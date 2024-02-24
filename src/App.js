@@ -1,25 +1,22 @@
-import convertExcelToJson from "./excelToJson";
 import { useState } from "react";
+import * as xlsx from "xlsx/xlsx";
 
 function App() {
-  const [formData, setFormData] = useState({
-    input: "",
-  });
+  const handleSubmit = () => {};
 
-  const handleSubmit = (e) => {
+  const readUploadFile = (e) => {
     e.preventDefault();
-    const file = formData.input;
-
-    convertExel(file);
-  };
-
-  const convertExel = async () => {
-    try {
-      const jsonData = await convertExcelToJson("your_excel_file_url.xlsx");
-      console.log(jsonData);
-      // Now you can use jsonData in your React component
-    } catch (error) {
-      // Handle errors
+    if (e.target.files) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const data = e.target.result;
+        const workbook = xlsx.read(data, { type: "array" });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const json = xlsx.utils.sheet_to_json(worksheet);
+        console.log(json);
+      };
+      reader.readAsArrayBuffer(e.target.files[0]);
     }
   };
 
@@ -34,16 +31,13 @@ function App() {
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               type="file"
-              value={formData.input}
-              onChange={(e) =>
-                setFormData({ ...formData, input: e.target.value })
-              }
-              id="input"
-              autoComplete="on"
+              name="upload"
+              id="upload"
+              onChange={readUploadFile}
             />
           </div>
 
-          <button className="bg-blue-400 p-2 px-4 m-4 rounded">Convert</button>
+          <button className="bg-blue-400 p-2 px-4 m-4 rounded">GUARDAR</button>
         </div>
       </form>
     </div>
