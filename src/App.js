@@ -1,7 +1,12 @@
 import convertExcelToJson from "./excelToJson";
+import { useState } from "react";
 
 function App() {
-  const convertedExel = async () => {
+  const [formData, setFormData] = useState({
+    input: "",
+  });
+
+  const convertExel = async () => {
     try {
       const jsonData = await convertExcelToJson("your_excel_file_url.xlsx");
       console.log(jsonData);
@@ -14,6 +19,10 @@ function App() {
   return (
     <div style={{ textAlign: "center" }}>
       <h1>Exel To Json</h1>
+      <form onSubmit={convertExel}>
+        <input type="file" />
+        <button>Convert</button>
+      </form>
     </div>
   );
 }
