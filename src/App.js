@@ -2,7 +2,12 @@ import { useState } from "react";
 import * as xlsx from "xlsx/xlsx";
 
 function App() {
-  const handleSubmit = () => {};
+  const [jsonData, setJsonData] = useState();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(jsonData);
+  };
 
   const readUploadFile = (e) => {
     e.preventDefault();
@@ -14,7 +19,8 @@ function App() {
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const json = xlsx.utils.sheet_to_json(worksheet);
-        console.log(json);
+        //console.log(json);
+        setJsonData(json);
       };
       reader.readAsArrayBuffer(e.target.files[0]);
     }
@@ -37,7 +43,9 @@ function App() {
             />
           </div>
 
-          <button className="bg-blue-400 p-2 px-4 m-4 rounded">GUARDAR</button>
+          <button className="bg-blue-400 p-2 px-4 m-4 rounded">
+            LEER DATOS
+          </button>
         </div>
       </form>
     </div>
