@@ -3,8 +3,13 @@ import { useState } from "react";
 
 function App() {
   const [formData, setFormData] = useState({
-    input: "",
+    input: undefined,
   });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData.input);
+  };
 
   const convertExel = async () => {
     try {
@@ -19,8 +24,12 @@ function App() {
   return (
     <div style={{ textAlign: "center" }}>
       <h1>Exel To Json</h1>
-      <form onSubmit={convertExel}>
-        <input type="file" />
+      <form onSubmit={handleSubmit}>
+        <input
+          type="file"
+          value={formData.input}
+          onChange={(e) => setFormData({ ...formData, input: e.target.value })}
+        />
         <button>Convert</button>
       </form>
     </div>
