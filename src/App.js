@@ -3,12 +3,14 @@ import { useState } from "react";
 
 function App() {
   const [formData, setFormData] = useState({
-    input: undefined,
+    input: "",
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData.input);
+    const file = formData.input;
+
+    convertExel(file);
   };
 
   const convertExel = async () => {
@@ -29,6 +31,8 @@ function App() {
           type="file"
           value={formData.input}
           onChange={(e) => setFormData({ ...formData, input: e.target.value })}
+          id="input"
+          autoComplete="on"
         />
         <button>Convert</button>
       </form>
